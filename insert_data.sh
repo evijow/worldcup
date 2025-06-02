@@ -8,8 +8,6 @@ else
 fi
 
 # Do not change code above this line. Use the PSQL variable above to query your database.
-
-PSQL="psql --username=freecodecamp --dbname=worldcup --no-align --tuples-only -c"
 echo $($PSQL "truncate games, teams restart identity cascade")
 cat games.csv | while IFS="," read year round winner opponent winner_goals opponent_goals
 
@@ -23,10 +21,10 @@ do
 		if [[ -z $winner_id ]]
 		then
 			insert_winner=$($PSQL "insert into teams(name) values('$winner')")
-			#if [[ $insert_winner == "INSERT 0 1" ]]
-			#then
-			#	echo "inserted $winner"
-			#fi
+			if [[ $insert_winner == "INSERT 0 1" ]]
+			then
+				echo "inserted $winner"
+			fi
 			#get new id
 			winner_id=$($PSQL "select team_id from teams where name='$winner'")
 		fi
@@ -36,10 +34,10 @@ do
 		if [[ -z $opponent_id ]]
 		then
 			insert_opponent=$($PSQL "insert into teams(name) values('$opponent')")
-			#if [[ $insert_opponent == "INSERT 0 1" ]]
-			#then
-			#	echo "inserted $opponent"
-			#fi
+			if [[ $insert_opponent == "INSERT 0 1" ]]
+			then
+				echo "inserted $opponent"
+			fi
 			#get new id
 			opponent_id=$($PSQL "select team_id from teams where name='$opponent'")
 		fi
